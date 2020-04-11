@@ -5,7 +5,7 @@
 This is a repository used to manage the nginx as well as any configuration/templating required to deploy the teams application.
 In our case, we likely won't need NGINX as we will do SSL termination from the ALB and just route requests directly to the ECS service. However, its useful to keep the NGINX config here for future use.
 
-## Running Locally
+## Running Locally with Docker Compose (Not required anymore)
 
 To build nginx, from the nginx directory, run: `docker image build -t custom-nginx:latest .`
 
@@ -33,6 +33,8 @@ Terraform state is managed in S3 in `sebs-terraform-state`.
 
 #### Create an ECR repository:
 
+Don't want to manage this with Terraform as if we want to delete everything we may not necessarily want to remove all the images...
+
 ```
 aws ecr create-repository --repository-name teams-backend
 ```
@@ -47,7 +49,9 @@ aws ecr create-repository --repository-name teams-backend
 
 #### Removing Infrastructure created with Terraform
 
-- Run: `ENVIRONMENT=nonprod TERRAFORM_RUN="apply" ./scripts/build.sh`
+- Run: `ENVIRONMENT=nonprod TERRAFORM_RUN="destroy" ./scripts/build.sh`
+
+**Note:** There is an existing issue with Terraform where it cannot delete the ECS cluster whilst tasks are active. You will need to stop all Tasks before running destroy to ensure destroy does not hang when deleting the cluster.
 
 ### Building/Pushing and Deploying
 

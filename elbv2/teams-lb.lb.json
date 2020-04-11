@@ -1,7 +1,0 @@
-{
-  "Scheme": "internet-facing",
-  "Type": "application",
-  "Subnets": ["subnet-2c2f3a4b", "subnet-bb686ef2"],
-  "SecurityGroups": ["sg-0881604b1310ddc56"],
-  "IpAddressType": "ipv4"
-}
