@@ -1,0 +1,42 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "teams-backend",
+      "image": "699129468547.dkr.ecr.ap-southeast-2.amazonaws.com/teams-backend:latest",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/teams-backend-task",
+          "awslogs-region": "ap-southeast-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:8080/teams/actuator/health || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3
+      }
+    }
+  ],
+  "executionRoleArn": "arn:aws:iam::699129468547:role/ecsTaskExecutionRole",
+  "memory": "1024",
+  "cpu": "512",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "volumes": []
+}
