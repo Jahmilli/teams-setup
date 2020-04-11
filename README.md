@@ -20,8 +20,12 @@ There are a number of steps required to deploy onto ECS. This includes creating 
 Useful Links include:
 
 - https://epsagon.com/blog/deploying-java-spring-boot-on-aws-fargate/
+- https://medium.com/@bradford_hamilton/deploying-containers-on-amazons-ecs-using-fargate-and-terraform-part-2-2e6f6a3a957f
+- https://blog.oxalide.io/post/aws-fargate/
 
 ### Creating the infrastucture
+
+Infrastructure is provisioned using json files containing the required configuration in pair with the AWS CLI. Terraform would have been more ideal for this however, its simpler to set this up and probably won't need to be done often. If it becomes a problem later, the switch to terraform should be fairly straight forward.
 
 #### Create an ECR repository:
 
@@ -31,12 +35,14 @@ aws ecr create-repository --repository-name teams-backend
 
 #### Creating ALB and Target Group
 
-TODO: Add here
+```
+aws elbv2 create-load-balancer --name teams-lb --cli-input-json file://elbv2/teams-lb.lb.json --region ap-southeast-2
+```
 
 #### Create Task Definition
 
 ```
-aws ecs register-task-definition --family <Task_Name> --cli-input-json file://ecs/teams-backend.td.json --region ap-southeast-2
+aws ecs register-task-definition --family teams-backend --cli-input-json file://ecs/teams-backend.td.json --region ap-southeast-2
 ```
 
 #### Create Service Definition
