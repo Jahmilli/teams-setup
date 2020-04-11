@@ -25,7 +25,11 @@ Useful Links include:
 
 ### Creating the infrastucture
 
-Infrastructure is provisioned using json files containing the required configuration in pair with the AWS CLI. Terraform would have been more ideal for this however, its simpler to set this up and probably won't need to be done often. If it becomes a problem later, the switch to terraform should be fairly straight forward.
+Infrastructure is provisioned using Terraform. I was originally going to just try and use JSON files in combination with the AWS CLI but it seemed like manual work would be needed or a bit of extra scripting.
+
+#### Setup Terraform State Bucket
+
+Terraform state is managed in S3 in `sebs-terraform-state`.
 
 #### Create an ECR repository:
 
@@ -33,21 +37,17 @@ Infrastructure is provisioned using json files containing the required configura
 aws ecr create-repository --repository-name teams-backend
 ```
 
-#### Creating ALB and Target Group
+#### Creating Everything Else
 
-```
-aws elbv2 create-load-balancer --name teams-lb --cli-input-json file://elbv2/teams-lb.lb.json --region ap-southeast-2
-```
+- Make sure you have Terraform, to check if you do, run: `terraform --version`
 
-#### Create Task Definition
+- Make sure you have correct access to AWS
 
-```
-aws ecs register-task-definition --family teams-backend --cli-input-json file://ecs/teams-backend.td.json --region ap-southeast-2
-```
+- To setup the infrastructure, run: `ENVIRONMENT=nonprod TERRAFORM_RUN="apply" ./scripts/build.sh`
 
-#### Create Service Definition
+#### Removing Infrastructure created with Terraform
 
-TODO: Add here
+- Run: `ENVIRONMENT=nonprod TERRAFORM_RUN="apply" ./scripts/build.sh`
 
 ### Building/Pushing and Deploying
 
