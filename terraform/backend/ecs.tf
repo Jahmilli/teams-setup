@@ -1,9 +1,9 @@
 resource "aws_ecs_cluster" "teams" {
-  name = "${terraform.workspace}_teams"
+  name = "${terraform.workspace}-teams"
 }
 
 resource "aws_ecs_task_definition" "teams_backend" {
-  family                   = "${terraform.workspace}_teams-backend"
+  family                   = "${terraform.workspace}-teams-backend"
   execution_role_arn       = "arn:aws:iam::699129468547:role/ecsTaskExecutionRole"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -14,8 +14,8 @@ resource "aws_ecs_task_definition" "teams_backend" {
 }
 
 resource "aws_ecs_service" "teams" {
-  name            = "${terraform.workspace}_teams"
-  cluster         = aws_ecs_cluster.main.id
+  name            = "${terraform.workspace}-teams"
+  cluster         = aws_ecs_cluster.teams.id
   task_definition = aws_ecs_task_definition.teams_backend.arn
   desired_count   = 1
   launch_type     = "FARGATE"
