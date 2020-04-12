@@ -1,5 +1,17 @@
 # Teams Setup
 
+## TODO:
+
+- Create Route53 Alias Or Cname record for Loadbalancer and attach it there
+- Figure sending HTTPS requests from client to ALB and do SSL termination from ALB.
+- Set up CI (we want the following:
+  - Tests (unit tests)
+  - Application build (output to JAR)
+  - Docker build
+  - Docker tag (make sure git commit is included as well)
+  - Docker push to ECR
+  - Trigger new task deployment in ECS
+
 ## Description
 
 This is a repository used to manage the nginx as well as any configuration/templating required to deploy the teams application.
