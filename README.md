@@ -2,9 +2,13 @@
 
 ## TODO:
 
+- Fix up security groups for ECS and Load Balancer. Create a separate security group for each.
+  - The security group with the loadbalancer should allow all egress traffic to the security group associated with the container instane
+  - The SG associated with the container instance allows all ingress traffic on the ephemeral port range (32768 - 65535) from the SG associated with your load balancer.
 - Create Route53 Alias Or Cname record for Loadbalancer and attach it there
 - Figure sending HTTPS requests from client to ALB and do SSL termination from ALB.
 - Set up CI (we want the following:
+  - lint checks
   - Tests (unit tests)
   - Application build (output to JAR)
   - Docker build

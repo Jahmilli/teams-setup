@@ -1,49 +1,35 @@
-resource "aws_lb" "alb" {
-  name               = "teams"
+resource "aws_lb" "teams" {
+  name               = "${terraform.workspace}_teams"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.teams.id]
+  security_groups    = [aws_security_group.teams_loadbalancer.id]
   subnets            = [var.subnet_a, var.subnet_b]
 }
 
-resource "aws_alb_listener" "alb_listener_http" {
-  load_balancer_arn = aws_lb.alb.arn
+resource "aws_alb_listener" "http" {
+  load_balancer_arn = aws_lb.teams.arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.lb_target_group.arn
+    target_group_arn = aws_lb_target_group.teams.arn
     type             = "forward"
   }
 }
 
-resource "aws_alb_listener" "alb_listener_tomcat" {
-  load_balancer_arn = aws_lb.alb.arn
+resource "aws_alb_listener" "tomcat" {
+  load_balancer_arn = aws_lb.teams.arn
   port              = 8080
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.lb_target_group.arn
+    target_group_arn = aws_lb_target_group.teams.arn
     type             = "forward"
   }
 }
 
-# resource "aws_alb_listener_rule" "http_listener_rule" {
-#   depends_on   = ["aws_alb_target_group.alb_target_group"]
-#   listener_arn = "${aws_alb_listener.alb_listener.arn}"
-#   priority     = "${var.priority}"
-#   action {
-#     type             = "forward"
-#     target_group_arn = "${aws_alb_target_group.alb_target_group.id}"
-#   }
-#   # condition {
-#   #   field  = "path-pattern"
-#   #   values = ["${var.alb_path}"]
-#   # }
-# }
-
-resource "aws_lb_target_group" "lb_target_group" {
-  name        = "teams-lb-target-group"
+resource "aws_lb_target_group" "teams" {
+  name        = "${terraform.workspace}_teams"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
