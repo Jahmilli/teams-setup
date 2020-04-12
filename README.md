@@ -84,3 +84,11 @@ docker tag teams-backend:latest 699129468547.dkr.ecr.ap-southeast-2.amazonaws.co
 ```
 docker push 699129468547.dkr.ecr.ap-southeast-2.amazonaws.com/teams-backend:latest
 ```
+
+### Useful things
+
+To remove dangling images run:
+
+```
+docker images | grep -i none | tr -s ' ' | cut -d ' ' -f 3 | while read line; do docker rmi $line; done
+```
