@@ -51,6 +51,22 @@ Don't want to manage this with Terraform as if we want to delete everything we m
 aws ecr create-repository --repository-name teams-backend
 ```
 
+#### Create IAM Group and Service Account in AWS
+
+This was done manually from the console and sort of lazily. The following were created:
+
+- User:
+  - name: cicd-service-account
+  - group: cicd-service-account
+  - tags: none
+- IAM Group:
+  - name: cicd-service-account
+  - permissions:
+    - AmazonECS_FullAccess
+    - AmazonEC2ContainerRegistryPowerUser
+
+Once the service account is created, we need to add the access key and secret access key as Github Secrets.
+
 #### Creating Everything Else
 
 - Make sure you have Terraform, to check if you do, run: `terraform --version`

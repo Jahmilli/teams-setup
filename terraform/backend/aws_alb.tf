@@ -29,11 +29,12 @@ resource "aws_alb_listener" "tomcat" {
 }
 
 resource "aws_lb_target_group" "teams" {
-  name        = "${terraform.workspace}-teams"
-  port        = 80
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-  target_type = "ip"
+  name                 = "${terraform.workspace}-teams"
+  port                 = 80
+  protocol             = "HTTP"
+  vpc_id               = var.vpc_id
+  target_type          = "ip"
+  deregistration_delay = 60
 
   lifecycle {
     create_before_destroy = true
@@ -42,8 +43,8 @@ resource "aws_lb_target_group" "teams" {
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 10
-    timeout             = 30
-    interval            = 40
+    timeout             = 20
+    interval            = 25
     path                = "/teams/actuator/health"
     protocol            = "HTTP"
   }
